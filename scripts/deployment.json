@@ -1,0 +1,12 @@
+{
+  "network": "bradbury",
+  "chainId": 4221,
+  "rpcUrl": "https://rpc-bradbury.genlayer.com",
+  "explorer": "https://explorer-bradbury.genlayer.com",
+  "contractAddress": "0x5CA915C40723d49cCdd4288F8B249E88fE90cF49",
+  "deployTxHash": "0x6e883de77f65699583f7920eed3131659f93dcb8e7e3b41b0b4c10ee011d439f",
+  "deployedAt": "2026-07-07T16:12:30.206Z",
+  "feeBps": 100,
+  "feeRecipient": "0x0b30FFf90Ed88739670A0bf10e9e70717372Ae28",
+  "owner": "0x0b30FFf90Ed88739670A0bf10e9e70717372Ae28"
+}

@@ -1,0 +1,16 @@
+{
+  "name": "adjudica-scripts",
+  "private": true,
+  "type": "module",
+  "version": "1.0.0",
+  "description": "Deploy and seed scripts for Adjudica on GenLayer Bradbury",
+  "scripts": {
+    "deploy": "node deploy.mjs",
+    "seed": "node seed.mjs",
+    "verify": "node verify.mjs"
+  },
+  "dependencies": {
+    "dotenv": "^17.4.2",
+    "genlayer-js": "^1.1.8"
+  }
+}
