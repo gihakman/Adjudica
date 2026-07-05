@@ -245,10 +245,34 @@ export default function App() {
             </div>
             <p className="lead" style={{ marginBottom: 6 }}>
               Call any view method for free, or connect a wallet to open a case, commit evidence,
-              request a verdict, and settle. Transaction status updates live with a link to the
-              explorer.
+              request a verdict, and settle. Every write shows live status with a link to the
+              explorer. Use the example presets to fill the fields in one click.
             </p>
           </div>
+
+          <div className="grid cols-2" style={{ marginBottom: 20 }}>
+            <div className="cell">
+              <div className="subhead">Review flow · fulfilled path</div>
+              <ol className="steps-ol">
+                <li><code>create_case</code>, preset <b>Fulfilled path</b></li>
+                <li><code>submit_evidence</code>, preset <b>Fulfilled · provider</b></li>
+                <li><code>submit_evidence</code>, preset <b>Fulfilled · client</b></li>
+                <li><code>adjudicate</code> (wait for consensus, about a minute)</li>
+                <li><code>settle</code>, then read <code>get_case</code> for the verdict</li>
+              </ol>
+            </div>
+            <div className="cell">
+              <div className="subhead">Review flow · breach with escrow</div>
+              <ol className="steps-ol">
+                <li><code>create_case</code>, preset <b>Breach path (you are the client)</b></li>
+                <li><code>fund_escrow</code>, preset locks 0.01 GEN</li>
+                <li><code>submit_evidence</code>, presets <b>Breach · provider</b> then <b>Breach · client</b></li>
+                <li><code>adjudicate</code>, then <code>settle</code></li>
+                <li><code>withdraw</code> to pull your refund</li>
+              </ol>
+            </div>
+          </div>
+
           <Console wallet={walletWithRefresh} />
         </div>
       </section>

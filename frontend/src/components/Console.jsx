@@ -36,7 +36,46 @@ function coerce(kind, raw) {
   return raw ?? "";
 }
 
-function ReadPanel() {
+// Resolve preset tokens against live state: {wallet} -> connected address,
+// {latestCaseId} -> newest case id read from the contract.
+async function resolveExampleValues(ex, address) {
+  const out = {};
+  for (const [k, v] of Object.entries(ex.values)) {
+    if (v === "{wallet}") {
+      out[k] = address || "";
+    } else if (v === "{latestCaseId}") {
+      try { out[k] = String(Number(await read("get_case_count"))); } catch { out[k] = ""; }
+    } else {
+      out[k] = v;
+    }
+  }
+  return out;
+}
+
+function ExampleChips({ method, address, onFill }) {
+  if (!method.examples?.length) return null;
+  return (
+    <div className="field">
+      <label>examples</label>
+      <div className="chips">
+        {method.examples.map((ex, i) => (
+          <button
+            type="button"
+            key={i}
+            className="chip"
+            onClick={async () => onFill(await resolveExampleValues(ex, address))}
+          >
+            {ex.label}
+          </button>
+        ))}
+      </div>
+      <span className="hint">Prefills the fields below. Case id auto-fills to your latest case.</span>
+    </div>
+  );
+}
+
+function ReadPanel({ wallet }) {
+  const address = wallet?.address;
   const [idx, setIdx] = useState(0);
   const method = READ_METHODS[idx];
   const [values, setValues] = useState({});
@@ -65,6 +104,7 @@ function ReadPanel() {
           {READ_METHODS.map((m, i) => <option key={m.name} value={i}>{m.label}</option>)}
         </select>
       </div>
+      <ExampleChips method={method} address={address} onFill={setValues} />
       <Params method={method} values={values} setValues={setValues} />
       <div><button className="btn primary" onClick={call} disabled={busy}>{busy ? "Reading…" : "Call (free, no wallet)"}</button></div>
       {err && <pre className="output err">{err}</pre>}
@@ -152,6 +192,7 @@ function WritePanel({ wallet }) {
         </select>
         {method.note && <span className="hint">{method.note}</span>}
       </div>
+      <ExampleChips method={method} address={address} onFill={setValues} />
       <Params method={method} values={values} setValues={setValues} />
       <div>
         <button className="btn primary" onClick={send} disabled={busy || !address}>
@@ -174,7 +215,7 @@ export function Console({ wallet }) {
       <div style={{ padding: "12px 24px", borderBottom: "1px solid var(--line-soft)" }} className="muted mono">
         contract <a href={addrUrl(CONTRACT_ADDRESS)} target="_blank" rel="noreferrer">{shortAddr(CONTRACT_ADDRESS)}</a> · GenLayer Bradbury
       </div>
-      {tab === "read" ? <ReadPanel /> : <WritePanel wallet={wallet} />}
+      {tab === "read" ? <ReadPanel wallet={wallet} /> : <WritePanel wallet={wallet} />}
     </div>
   );
 }

@@ -221,6 +221,21 @@ textarea { min-height: 90px; resize: vertical; line-height: 1.5; }
 .row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 @media (max-width: 640px) { .row { grid-template-columns: 1fr; } }
 
+/* example preset chips */
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip {
+  font-family: var(--mono); font-size: 12px; letter-spacing: 0.01em;
+  border: 1px solid var(--line); background: var(--ink-800); color: var(--bone-dim);
+  padding: 7px 11px; border-radius: 2px; cursor: pointer;
+  transition: border-color 0.15s var(--ease), color 0.15s var(--ease), background 0.15s var(--ease);
+}
+.chip:hover { border-color: var(--brass); color: var(--bone); background: var(--ink-750); }
+
+/* ordered review steps */
+.steps-ol { margin: 10px 0 0; padding-left: 20px; color: var(--bone-dim); font-size: 14px; }
+.steps-ol li { margin-bottom: 7px; }
+.steps-ol code { font-family: var(--mono); font-size: 12px; color: var(--brass); background: var(--brass-dim); padding: 1px 6px; border-radius: 2px; }
+
 .output { font-family: var(--mono); font-size: 13px; background: var(--ink-900); border: 1px solid var(--line);
   border-radius: var(--radius); padding: 16px; color: var(--verdict); white-space: pre-wrap; word-break: break-word; max-height: 340px; overflow: auto; }
 .output.err { color: var(--breach); }
