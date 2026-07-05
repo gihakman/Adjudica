@@ -101,7 +101,13 @@ function WritePanel({ wallet }) {
       setTx((t) => ({ ...t, phase: final, done: !failed, failed }));
       wallet.onChange?.();
     } catch (e) {
-      setTx((t) => ({ ...t, failed: true, error: e?.shortMessage || e?.message || String(e) }));
+      const raw = e?.shortMessage || e?.message || String(e);
+      const friendly = /revert/i.test(raw)
+        ? "The network reverted this submission before it executed. This is usually transient. Send it again, and if it keeps failing, raise the gas limit in your wallet before confirming."
+        : /user rejected|user denied|denied/i.test(raw)
+        ? "Request rejected in your wallet."
+        : raw;
+      setTx((t) => ({ ...t, failed: true, error: friendly }));
     } finally {
       setBusy(false);
     }
@@ -122,6 +128,12 @@ function WritePanel({ wallet }) {
 
   return (
     <div className="console-body">
+      <div className="note">
+        <b>Before you write:</b> GenLayer occasionally reverts a consensus submission on the
+        first attempt. If a write fails with a "reverted" message, just send it again. If it
+        keeps failing, raise the gas limit in your wallet (edit gas, set a higher limit)
+        before confirming. A reverted write changes nothing on-chain, so retrying is safe.
+      </div>
       {!address ? (
         <div className="field">
           <button className="btn primary" onClick={connect} disabled={connecting}>
