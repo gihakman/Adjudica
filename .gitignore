@@ -1,0 +1,29 @@
+# Environment
+.env
+.env.*
+!.env.example
+
+# Node / Vite / Vercel
+node_modules/
+dist/
+build/
+.vercel/
+*.log
+
+# Python
+.venv*
+__pycache__/
+*.pyc
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Build artifacts
+artifacts/
+cache/
+coverage/
+
+# Editor / OS
+.DS_Store
+.idea/
+.vscode/
